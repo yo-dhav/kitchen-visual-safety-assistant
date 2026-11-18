@@ -1,0 +1,50 @@
+{
+  "status": "trained",
+  "weights": "models/hairnet.pt",
+  "dataset": {
+    "config": "data/hairnet-grouped/data.yaml",
+    "names": [
+      "hairnet",
+      "no_hairnet"
+    ],
+    "splits": {
+      "train": {
+        "images": 397,
+        "objects": {
+          "hairnet": 169,
+          "no_hairnet": 948
+        }
+      },
+      "val": {
+        "images": 39,
+        "objects": {
+          "hairnet": 47,
+          "no_hairnet": 14
+        }
+      },
+      "test": {
+        "images": 420,
+        "objects": {
+          "hairnet": 431,
+          "no_hairnet": 205
+        }
+      }
+    }
+  },
+  "test_metrics": {
+    "metrics/precision(B)": 0.3406045334436302,
+    "metrics/recall(B)": 0.286978665610322,
+    "metrics/mAP50(B)": 0.19071240786854743,
+    "metrics/mAP50-95(B)": 0.0670202129267371,
+    "fitness": 0.0670202129267371
+  },
+  "epochs_requested": 50,
+  "base_model": "yolo11n.pt",
+  "imgsz": 640,
+  "freeze": 0,
+  "limitations": [
+    "Public data may not represent your kitchen",
+    "No detection means uncertain, not absent",
+    "Exact duplicate audit does not detect near duplicates; split by source session before training"
+  ]
+}

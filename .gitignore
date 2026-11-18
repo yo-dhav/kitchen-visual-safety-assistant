@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+data/
+runs/
+video-results/
+predictions/
+verified-exports/
+*.zip
+*.log
+*.cache
+*.pt
+!yolo11n.pt
+!models/hairnet.pt
