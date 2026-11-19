@@ -1,0 +1,49 @@
+{
+  "config": "kitchenhygiene-heads/data.yaml",
+  "names": [
+    "hairnet",
+    "no_hairnet"
+  ],
+  "splits": {
+    "train": {
+      "images": 1603,
+      "objects": {
+        "hairnet": 1291,
+        "no_hairnet": 2296
+      }
+    },
+    "val": {
+      "images": 232,
+      "objects": {
+        "hairnet": 415,
+        "no_hairnet": 118
+      }
+    },
+    "test": {
+      "images": 298,
+      "objects": {
+        "hairnet": 452,
+        "no_hairnet": 68
+      }
+    }
+  },
+  "source_dataset": "KitchenHygiene v3; CC BY 4.0",
+  "source_images": 9304,
+  "excluded": {
+    "no_head_labels": 7065,
+    "unknown_augmented_origin": 106
+  },
+  "valid_non_head_polygon_lines": 675,
+  "exact_duplicates_removed": 0,
+  "near_duplicate_links": 21722,
+  "source_components": 346,
+  "split_method": "Seed-42 source families plus mirrored dHash radius-3 components; known kitchen CCTV and office families in train; food-production media held out unless connected to train",
+  "conflicts": [],
+  "limitations": [
+    "Mixed kitchen, office, food-production and stock imagery; not an all-kitchen benchmark",
+    "Source identification is heuristic and incomplete",
+    "Known kitchen CCTV retained entirely in train; held-out set is not independent college-kitchen footage",
+    "Near-duplicate hashing can overmerge sources and cannot guarantee independence",
+    "Both public datasets may share images; start from general YOLO weights, not the old fine-tuned checkpoint"
+  ]
+}

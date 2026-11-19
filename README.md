@@ -54,6 +54,8 @@ Replace the example rectangles with original-frame pixel coordinates. Outputs go
 
 ## Training and evaluation
 
+**New experiment:** [KitchenHygiene v3 preparation and training](KITCHENHYGIENE_V3.md) uses 2,133 head-labeled images, including kitchen CCTV, with related sources grouped before splitting. Use `notebooks/Train_KitchenHygiene_v3.ipynb`; it needs just one dataset ZIP. The original trained weights and measured baseline remain unchanged until the replacement run completes.
+
 The original dataset is [agts/hairnet v1](https://universe.roboflow.com/agts/hairnet/dataset/1), CC BY 4.0. Download its YOLOv8 export, then:
 
 ```powershell
@@ -72,7 +74,7 @@ python -m pip install -r requirements.txt PyYAML
 python -m unittest discover -s tests -v
 ```
 
-27 unit tests passed during development, covering scoping, geometry, uncertainty, dwell timing, annotation safeguards and dataset auditing. Live image/API inference and a four-frame repeated-photo video smoke check passed. These checks do not establish model accuracy or real-world safety. Browser visual QA was unavailable. See [verification details](VERIFICATION.md).
+33 unit tests passed, covering scoping, geometry, uncertainty, dwell timing, annotation safeguards, dataset auditing and KitchenHygiene source grouping/remapping. Live image/API inference and a four-frame repeated-photo video smoke check passed for the existing app. The new training notebook is syntax/configuration checked but has not yet run in Colab. These checks do not establish model accuracy or real-world safety. Browser visual QA was unavailable. See [verification details](VERIFICATION.md).
 
 ## Layout
 

@@ -1,5 +1,5 @@
 """Validate a YOLO dataset, fine-tune a detector, and evaluate held-out data."""
-import argparse, hashlib, json, math
+import argparse, hashlib, json, math, csv
 from pathlib import Path
 
 def audit(config):
@@ -52,6 +52,8 @@ def main():
     p.add_argument('--output',default='runs/hairnet')
     p.add_argument('--freeze',type=int,default=0)
     p.add_argument('--threads',type=int,default=4)
+    p.add_argument('--patience',type=int,default=7)
+    p.add_argument('--class-power',type=float,default=0.0,help='Ultralytics cls_pw; supported by the pinned notebook version')
     args=p.parse_args()
     report=audit(args.data)
     output=Path(args.output).resolve(); output.mkdir(parents=True,exist_ok=True)
@@ -62,14 +64,19 @@ def main():
     import torch
     torch.set_num_threads(args.threads)
     model=YOLO('yolo11n.pt')
+    weighting={'cls_pw':args.class_power} if args.class_power else {}
     result=model.train(data=str(Path(args.data).resolve()),epochs=args.epochs,device=args.device,
         batch=args.batch,imgsz=args.imgsz,workers=0,seed=42,deterministic=True,
-        project=str(output),name='training',exist_ok=False,patience=7,freeze=args.freeze or None)
+        project=str(output),name='training',exist_ok=False,patience=args.patience,freeze=args.freeze or None,**weighting)
     best=Path(result.save_dir)/'weights/best.pt'
     metrics=YOLO(str(best)).val(data=str(Path(args.data).resolve()),split='test',device=args.device,imgsz=args.imgsz,batch=args.batch,workers=0,
         project=str(output),name='held_out_test',plots=True)
-    card={'status':'trained','weights':str(best),'dataset':report,'test_metrics':metrics.results_dict,
-        'epochs_requested':args.epochs,'base_model':'yolo11n.pt','imgsz':args.imgsz,'freeze':args.freeze,
+    per_class={}
+    for i,cls in enumerate(metrics.box.ap_class_index):
+        per_class[report['names'][int(cls)]]={'precision':float(metrics.box.p[i]),'recall':float(metrics.box.r[i]),'AP50':float(metrics.box.ap50[i]),'AP50_95':float(metrics.box.ap[i])}
+    history=list(csv.DictReader((Path(result.save_dir)/'results.csv').open()))
+    card={'status':'trained','weights':str(best),'dataset':report,'test_metrics':metrics.results_dict,'per_class_test_metrics':per_class,
+        'epochs_requested':args.epochs,'epochs_completed':len(history),'base_model':'yolo11n.pt','imgsz':args.imgsz,'freeze':args.freeze,'patience':args.patience,'class_power':args.class_power,
         'limitations':['Public data may not represent your kitchen','No detection means uncertain, not absent','Exact duplicate audit does not detect near duplicates; split by source session before training']}
     (output/'model_card.json').write_text(json.dumps(card,indent=2,default=str))
     print('Training and held-out evaluation complete:',best)
