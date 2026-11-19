@@ -2,53 +2,73 @@
   "status": "trained",
   "weights": "models/hairnet.pt",
   "dataset": {
-    "config": "/content/hairnet-grouped/data.yaml",
+    "config": "data/kitchenhygiene-heads/data.yaml",
     "names": [
       "hairnet",
       "no_hairnet"
     ],
     "splits": {
       "train": {
-        "images": 397,
+        "images": 1603,
         "objects": {
-          "hairnet": 169,
-          "no_hairnet": 948
+          "hairnet": 1291,
+          "no_hairnet": 2296
         }
       },
       "val": {
-        "images": 39,
+        "images": 232,
         "objects": {
-          "hairnet": 47,
-          "no_hairnet": 14
+          "hairnet": 415,
+          "no_hairnet": 118
         }
       },
       "test": {
-        "images": 420,
+        "images": 298,
         "objects": {
-          "hairnet": 431,
-          "no_hairnet": 205
+          "hairnet": 452,
+          "no_hairnet": 68
         }
       }
     }
   },
   "test_metrics": {
-    "metrics/precision(B)": 0.3406045334436302,
-    "metrics/recall(B)": 0.286978665610322,
-    "metrics/mAP50(B)": 0.19071240786854743,
-    "metrics/mAP50-95(B)": 0.0670202129267371,
-    "fitness": 0.0670202129267371
+    "metrics/precision(B)": 0.7943018358173881,
+    "metrics/recall(B)": 0.6919573138990109,
+    "metrics/mAP50(B)": 0.7469621463358721,
+    "metrics/mAP50-95(B)": 0.33048856717034514,
+    "fitness": 0.33048856717034514
+  },
+  "per_class_test_metrics": {
+    "hairnet": {
+      "precision": 0.8499731754578532,
+      "recall": 0.7809734513274337,
+      "AP50": 0.822203168060446,
+      "AP50_95": 0.3757965317331169
+    },
+    "no_hairnet": {
+      "precision": 0.738630496176923,
+      "recall": 0.6029411764705882,
+      "AP50": 0.6717211246112982,
+      "AP50_95": 0.2851806026075735
+    }
   },
   "epochs_requested": 50,
+  "epochs_completed": 50,
   "base_model": "yolo11n.pt",
   "imgsz": 640,
   "freeze": 0,
+  "patience": 15,
+  "class_power": 0.25,
   "limitations": [
     "Public data may not represent your kitchen",
     "No detection means uncertain, not absent",
-    "Exact duplicate audit does not detect near duplicates; split by source session before training"
+    "Exact duplicate audit does not detect near duplicates; split by source session before training",
+    "Missed confident head detections on the bundled real restaurant photograph at confidence 0.65",
+    "No-hairnet recall is approximately 60% on the public test set",
+    "Known kitchen CCTV is in training; the public mixed-domain holdout is not a college-kitchen benchmark"
   ],
-  "epochs_completed": 16,
-  "best_validation_epoch": 9,
-  "checkpoint_sha256": "d515334f6a6b1148d63098e82cb0d7b45c151480681d2691ff4bca673484552c",
-  "readiness": "experimental; weak held-out performance; human review required"
+  "best_validation_epoch": 48,
+  "checkpoint_sha256": "bfd94acd623f651baaf1c0492b016d02478e9765bbf4d9c36ea63beabc76521c",
+  "evaluation_date": "2026-11-19",
+  "readiness": "Experimental; improved on the same public test set; independent kitchen validation required"
 }

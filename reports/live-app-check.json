@@ -1,0 +1,169 @@
+{
+  "status": "passed",
+  "scope": "Real online kitchen photo smoke test, no ground-truth accuracy measured",
+  "source": "Lars Plougmann, CC BY-SA 2.0, https://www.flickr.com/photos/75062596@N00/54174155431",
+  "detections": [
+    {
+      "label": "person",
+      "box": [
+        272.0504150390625,
+        221.38436889648438,
+        462.496337890625,
+        507.82733154296875
+      ],
+      "confidence": 0.804,
+      "hairnet": "uncertain",
+      "source": "model",
+      "assessment_source": "not_assessed"
+    },
+    {
+      "label": "person",
+      "box": [
+        441.7315979003906,
+        223.55209350585938,
+        546.4835815429688,
+        501.30902099609375
+      ],
+      "confidence": 0.632,
+      "hairnet": "uncertain",
+      "source": "model",
+      "assessment_source": "not_assessed"
+    },
+    {
+      "label": "bottle",
+      "box": [
+        486.9587707519531,
+        8.063733100891113,
+        507.14404296875,
+        74.57798767089844
+      ],
+      "confidence": 0.6,
+      "hairnet": "uncertain",
+      "source": "model"
+    },
+    {
+      "label": "bottle",
+      "box": [
+        376.9388427734375,
+        5.011908054351807,
+        399.6656188964844,
+        78.2339859008789
+      ],
+      "confidence": 0.514,
+      "hairnet": "uncertain",
+      "source": "model"
+    },
+    {
+      "label": "potted plant",
+      "box": [
+        288.5793762207031,
+        587.1326904296875,
+        571.4559936523438,
+        1019.3372192382812
+      ],
+      "confidence": 0.505,
+      "hairnet": "uncertain",
+      "source": "model"
+    },
+    {
+      "label": "bottle",
+      "box": [
+        461.806640625,
+        6.929150581359863,
+        483.0804443359375,
+        74.658447265625
+      ],
+      "confidence": 0.504,
+      "hairnet": "uncertain",
+      "source": "model"
+    },
+    {
+      "label": "bottle",
+      "box": [
+        398.30023193359375,
+        9.193743705749512,
+        422.4702453613281,
+        77.59428405761719
+      ],
+      "confidence": 0.466,
+      "hairnet": "uncertain",
+      "source": "model"
+    },
+    {
+      "label": "bottle",
+      "box": [
+        588.9725341796875,
+        1.1615722179412842,
+        612.6248779296875,
+        69.80152893066406
+      ],
+      "confidence": 0.454,
+      "hairnet": "uncertain",
+      "source": "model"
+    },
+    {
+      "label": "vase",
+      "box": [
+        325.4737243652344,
+        803.166015625,
+        488.66510009765625,
+        1024.0
+      ],
+      "confidence": 0.421,
+      "hairnet": "uncertain",
+      "source": "model"
+    },
+    {
+      "label": "bottle",
+      "box": [
+        445.2658996582031,
+        8.470464706420898,
+        465.45281982421875,
+        74.77946472167969
+      ],
+      "confidence": 0.402,
+      "hairnet": "uncertain",
+      "source": "model"
+    },
+    {
+      "label": "bottle",
+      "box": [
+        424.9041748046875,
+        9.140832901000977,
+        447.1387023925781,
+        76.01886749267578
+      ],
+      "confidence": 0.357,
+      "hairnet": "uncertain",
+      "source": "model"
+    }
+  ],
+  "events": [
+    {
+      "object": 1,
+      "type": "hairnet_review",
+      "label": "person",
+      "status": "uncertain",
+      "detail": "Hairnet not assessed; human review required",
+      "box": [
+        272.0504150390625,
+        221.38436889648438,
+        462.496337890625,
+        507.82733154296875
+      ]
+    },
+    {
+      "object": 2,
+      "type": "hairnet_review",
+      "label": "person",
+      "status": "uncertain",
+      "detail": "Hairnet not assessed; human review required",
+      "box": [
+        441.7315979003906,
+        223.55209350585938,
+        546.4835815429688,
+        501.30902099609375
+      ]
+    }
+  ]
+}

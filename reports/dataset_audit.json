@@ -1,29 +1,29 @@
 {
-  "config": "data/hairnet-grouped/data.yaml",
+  "config": "data/kitchenhygiene-heads/data.yaml",
   "names": [
     "hairnet",
     "no_hairnet"
   ],
   "splits": {
     "train": {
-      "images": 397,
+      "images": 1603,
       "objects": {
-        "hairnet": 169,
-        "no_hairnet": 948
+        "hairnet": 1291,
+        "no_hairnet": 2296
       }
     },
     "val": {
-      "images": 39,
+      "images": 232,
       "objects": {
-        "hairnet": 47,
-        "no_hairnet": 14
+        "hairnet": 415,
+        "no_hairnet": 118
       }
     },
     "test": {
-      "images": 420,
+      "images": 298,
       "objects": {
-        "hairnet": 431,
-        "no_hairnet": 205
+        "hairnet": 452,
+        "no_hairnet": 68
       }
     }
   }

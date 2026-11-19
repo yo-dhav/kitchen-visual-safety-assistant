@@ -1,29 +1,43 @@
-# Trained model evaluation
+# Replacement head detector: evaluation
 
-The returned Colab archive contains actual fine-tuned YOLO11n weights. The bundled app automatically finds `models/hairnet.pt`. The general-object detector remains the separate pretrained `yolo11n.pt`.
+The current bundled checkpoint is the KitchenHygiene v3 head-only replacement, trained for 50 epochs in Colab. The best validation checkpoint is epoch 48. Training took approximately 28 minutes. It replaces the original agts/hairnet baseline; a historical model card and Git history retain that baseline.
 
-## Training evidence
+## Current held-out results
 
-- 397 training images, 39 validation images and 420 test images.
-- 50 epochs requested; 16 recorded in results.csv. With patience 7, this is consistent with early stopping rather than a failed run.
-- Total recorded training time: approximately 141 seconds on the Colab runtime.
-- Classes: hairnet, no_hairnet. Sources were grouped conservatively by filename to reduce obvious shared-scene leakage. Session independence is not fully proven.
-
-## Held-out results from the returned model card
-
-| Metric | Value |
+| Metric | Replacement model |
 |---|---:|
-| Mean precision | 34.1% |
-| Mean recall | 28.7% |
-| mAP at IoU 0.50 | 19.1% |
-| mAP averaged over IoU 0.50–0.95 | 6.7% |
+| Mean precision | 79.4% |
+| Mean recall | 69.2% |
+| mAP at IoU 0.50 | 74.7% |
+| mAP at IoU 0.50–0.95 | 33.0% |
 
-These are detector metrics, not an overall “accuracy” percentage. The test plots show missed heads, false detections on background objects and confusion between covered and uncovered heads. The exported confusion matrix uses its evaluation settings; its raw false-positive counts should not be treated as the precision of the app's fixed 0.65 confidence threshold. No test-set threshold tuning has been performed here.
+Test set: 298 images, containing 452 hairnet and 68 no_hairnet objects.
+
+| Class | Precision | Recall | AP50 |
+|---|---:|---:|---:|
+| hairnet | 85.0% | 78.1% | 82.2% |
+| no_hairnet | 73.9% | 60.3% | 67.2% |
+
+These are detector metrics, not an overall safety-accuracy percentage. The app's fixed 0.65 confidence threshold is not necessarily the operating point used by the reported precision/recall summary. A missing detection remains uncertain.
+
+## Comparison on the same test images
+
+The old baseline was evaluated locally on the same 298 prepared test images and image size. It scored **21.7% mAP50**, compared with the replacement's **74.7%**. Precision was 31.2% versus 79.4%; recall was 41.9% versus 69.2%. Old-model evaluation used CPU and replacement results came from Colab; minor hardware numerical differences are possible. No exact image duplicates were found between old training and this test set, but near-duplicate/source overlap is not fully excluded. See reports/same-test-comparison.json.
+
+The original 19.1% baseline score used a different test set and should not be used for this comparison.
+
+## Important observed limitations
+
+- The replacement produced **zero head predictions above confidence 0.65 on the bundled real restaurant photograph**. The photo has no verified safety ground truth, so this is an observed failure case, not a measured accuracy estimate. Kitchen model loading succeeds; the current app correctly leaves uncertain heads for human review.
+- No-hairnet recall is only about 60%, meaning many labeled uncovered heads were missed even on the public test set.
+- This mixed-domain dataset contains office demonstrations, kitchen CCTV, food-production media and stock photos. Known kitchen CCTV sources are kept together in training. The holdout is not independent college-kitchen footage.
+- Source-family and near-duplicate grouping reduce obvious leakage but do not establish full scene independence. The test class distribution is uneven.
+- These metrics do not validate person/head association, preparation-area assignment, walkway overlap or temporal event accuracy.
 
 ## Readiness
 
-Experimental project model only. It is not sufficiently reliable for unattended safety enforcement. Human review is required, and no detection must remain uncertain. The app's person-association rules and walkway logic are additional heuristics and have not been validated by these detector metrics. The software tests check logic, not real-world safety performance.
+An improved experimental student-project detector, suitable for demonstrating an evaluated prototype with human review. It is not sufficiently validated for unattended safety monitoring or enforcement. No fire, food-temperature, microbial-contamination or overall sanitation capability is claimed.
 
-## Next improvement cycle
+## Next evaluation
 
-Collect permitted, diverse kitchen images with both covered and uncovered heads in each source environment. Include small, partially hidden heads and true negative background images. Fix labeling inconsistencies, retain uncertain heads for human review, and split by complete capture session before augmentation. The current training set has 169 hairnet versus 948 no_hairnet objects, so add diverse positive examples rather than simply duplicating frames. Keep a new untouched evaluation set for the next model version; the current test results have now been inspected and must not become a tuning target.
+Collect independently labeled real kitchen sessions from different locations and cameras, including small/occluded heads and chef hats. Agree on label meaning before training. Measure head detection, association and false/missed review events separately. Keep future test sessions untouched by training and model selection.

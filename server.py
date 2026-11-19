@@ -2,7 +2,7 @@
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from io import BytesIO
-import base64, json, os, threading, socket
+import base64, json, os, threading, socket, hashlib
 from PIL import Image, ImageOps
 from core import review
 from hairnet import associate
@@ -12,6 +12,7 @@ ROOT = Path(__file__).parent
 LOCK = threading.Lock()
 MODEL = None
 HAIRNET_MODEL = None
+HAIRNET_MODEL_SHA = None
 
 class Handler(SimpleHTTPRequestHandler):
     def __init__(self,*args,**kwargs):
@@ -21,7 +22,7 @@ class Handler(SimpleHTTPRequestHandler):
         if self.path != '/api/status':
             return super().do_GET()
         card=ROOT/'models/model_card.json'
-        info={'hairnet_model_available':(ROOT/'models/hairnet.pt').is_file(),'experimental':True}
+        info={'hairnet_model_available':(ROOT/'models/hairnet.pt').is_file(),'experimental':True,'loaded_hairnet_checkpoint_sha256':HAIRNET_MODEL_SHA}
         if card.exists():
             info['test_metrics']=json.loads(card.read_text()).get('test_metrics',{})
         payload=json.dumps(info).encode()
@@ -43,7 +44,7 @@ class Handler(SimpleHTTPRequestHandler):
                     raise ValueError('Invalid image dimensions.')
                 result = {'events':review(data['detections'],data.get('zone'),w,h,prep=data.get('prep'),scoped=True)}
             else:
-                global MODEL, HAIRNET_MODEL
+                global MODEL, HAIRNET_MODEL, HAIRNET_MODEL_SHA
                 raw = base64.b64decode(data['image'].split(',',1)[1],validate=True)
                 im = ImageOps.exif_transpose(Image.open(BytesIO(raw))).convert('RGB')
                 if max(im.size)>12000:
@@ -62,6 +63,7 @@ class Handler(SimpleHTTPRequestHandler):
                     if hairnet_path:
                         if HAIRNET_MODEL is None:
                             HAIRNET_MODEL=YOLO(hairnet_path)
+                            HAIRNET_MODEL_SHA=hashlib.sha256(Path(hairnet_path).read_bytes()).hexdigest()
                         hp=HAIRNET_MODEL.predict(im,conf=.65,verbose=False)[0]
                         heads=[dict(label=hp.names[int(b.cls.item())],box=b.xyxy[0].tolist(),confidence=float(b.conf.item())) for b in hp.boxes]
                         detections=associate(detections,heads)

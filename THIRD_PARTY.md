@@ -4,3 +4,5 @@
 - Training data: hairnet by agts, version 1, CC BY 4.0. https://universe.roboflow.com/agts/hairnet/dataset/1 . Full dataset images are not bundled. Model results, class counts and training logs are included.
 - The bundled real restaurant photo is by Lars Plougmann, CC BY-SA 2.0. See static/examples/ATTRIBUTION.md. The photograph retains its own license, independently of the code license. No endorsement or compliance judgment about people pictured is implied.
 - Other Python dependencies retain their respective licenses.
+
+- Current replacement training data: KitchenHygiene v3 by Kitchen Hygiene, CC BY 4.0. https://universe.roboflow.com/kitchen-hygiene-efuu5/kitchenhygiene/dataset/3 . Only the head labels were used; full dataset images are not bundled.

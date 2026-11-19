@@ -1,0 +1,24 @@
+{
+  "test_images": 298,
+  "test_dataset": "Prepared KitchenHygiene v3 head subset",
+  "old_baseline_on_this_test": {
+    "metrics/precision(B)": 0.3122772814242018,
+    "metrics/recall(B)": 0.41933694177116576,
+    "metrics/mAP50(B)": 0.2167602917629608,
+    "metrics/mAP50-95(B)": 0.07500339631085053,
+    "fitness": 0.07500339631085053
+  },
+  "new_model_on_this_test": {
+    "metrics/precision(B)": 0.7943018358173881,
+    "metrics/recall(B)": 0.6919573138990109,
+    "metrics/mAP50(B)": 0.7469621463358721,
+    "metrics/mAP50-95(B)": 0.33048856717034514,
+    "fitness": 0.33048856717034514
+  },
+  "notes": [
+    "Old model evaluated locally on CPU; new model metrics are the returned Colab evaluation",
+    "Same images, labels and image size; hardware numerical differences possible",
+    "No exact duplicate images found between old training and this test; near-duplicate/source overlap is not fully excluded",
+    "This is not an independent college-kitchen deployment benchmark"
+  ]
+}

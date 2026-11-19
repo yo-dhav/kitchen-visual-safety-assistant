@@ -2,7 +2,7 @@
 
 An **experimental student computer-vision project** for reviewing kitchen images and recorded video. It combines a fine-tuned YOLO11n hairnet baseline with marked preparation areas, walkway-overlap rules and human review.
 
-**Current model performance is weak.** This is a learning project, not a reliable safety monitoring or enforcement system. The application does not issue an overall safe/unsafe kitchen verdict.
+**The replacement detector is improved but still experimental.** It needs human review and independent kitchen validation; it is not an unattended safety monitoring or enforcement system. The application does not issue an overall safe/unsafe kitchen verdict.
 
 ## What works
 
@@ -17,16 +17,16 @@ An **experimental student computer-vision project** for reviewing kitchen images
 
 Illustrated kitchen scenarios use supplied labels to test rules. They are explicitly not AI predictions or real validation footage.
 
-## Measured baseline
+## Current replacement-model results
 
 | Item | Result |
 |---|---:|
-| Training / validation / test images | 397 / 39 / 420 |
-| Training epochs completed | 16 (early stopping; best checkpoint at epoch 9) |
-| Held-out mean precision | 34.1% |
-| Held-out mean recall | 28.7% |
-| mAP@50 | 19.1% |
-| mAP@50–95 | 6.7% |
+| Training / validation / test images | 1,603 / 232 / 298 |
+| Training epochs completed | 50 (best checkpoint at epoch 48) |
+| Held-out mean precision | 79.4% |
+| Held-out mean recall | 69.2% |
+| mAP@50 | 74.7% |
+| mAP@50–95 | 33.0% |
 
 These are detection metrics, not an overall accuracy percentage. Source-family grouping reduced obvious shared-scene leakage but cannot prove session independence. Small validation data, class imbalance and domain shift limit the results. See [evaluation](EVALUATION.md) and [recorded metrics](models/model_card.json). Interface improvements have not changed the trained model's scores.
 
@@ -54,7 +54,7 @@ Replace the example rectangles with original-frame pixel coordinates. Outputs go
 
 ## Training and evaluation
 
-**New experiment:** [KitchenHygiene v3 preparation and training](KITCHENHYGIENE_V3.md) uses 2,133 head-labeled images, including kitchen CCTV, with related sources grouped before splitting. Use `notebooks/Train_KitchenHygiene_v3.ipynb`; it needs just one dataset ZIP. The original trained weights and measured baseline remain unchanged until the replacement run completes.
+**New experiment:** [KitchenHygiene v3 preparation and training](KITCHENHYGIENE_V3.md) uses 2,133 head-labeled images, including kitchen CCTV, with related sources grouped before splitting. Use `notebooks/Train_KitchenHygiene_v3.ipynb`; it needs just one dataset ZIP. The replacement run has completed and its checkpoint is now bundled. The old model scored 21.7% mAP50 on the same test images, versus 74.7% for this replacement. See EVALUATION.md for comparison limits and a missed real-kitchen photo example.
 
 The original dataset is [agts/hairnet v1](https://universe.roboflow.com/agts/hairnet/dataset/1), CC BY 4.0. Download its YOLOv8 export, then:
 
@@ -74,7 +74,7 @@ python -m pip install -r requirements.txt PyYAML
 python -m unittest discover -s tests -v
 ```
 
-33 unit tests passed, covering scoping, geometry, uncertainty, dwell timing, annotation safeguards, dataset auditing and KitchenHygiene source grouping/remapping. Live image/API inference and a four-frame repeated-photo video smoke check passed for the existing app. The new training notebook is syntax/configuration checked but has not yet run in Colab. These checks do not establish model accuracy or real-world safety. Browser visual QA was unavailable. See [verification details](VERIFICATION.md).
+33 unit tests passed, covering scoping, geometry, uncertainty, dwell timing, annotation safeguards, dataset auditing and KitchenHygiene source grouping/remapping. Live image/API inference and a four-frame repeated-photo video smoke check passed for the existing app. The KitchenHygiene replacement notebook completed a 50-epoch Colab run; its results were inspected and its checkpoint loaded locally. These checks do not establish model accuracy or real-world safety. Browser visual QA was unavailable. See [verification details](VERIFICATION.md).
 
 ## Layout
 

@@ -37,9 +37,9 @@ Each split needs both classes, and the builder rejects repeated images and sessi
 
 ## Current evidence and remaining limits
 
-- Original head model: held-out mAP50 19.1%, precision 34.1%, recall 28.7%; weak.
-- These app improvements do not change model weights or improve those scores.
-- No new kitchen dataset has been labeled and used for retraining yet.
+- Current head model: held-out mAP50 74.7%, precision 79.4%, recall 69.2%; experimental, with observed real-photo misses.
+- The KitchenHygiene replacement changes the model weights; the area and review rules remain additional heuristics.
+- KitchenHygiene public data have been used for retraining; independently labeled college-kitchen sessions are still needed.
 - The real kitchen photo has not been assigned ground-truth safety labels.
 - No fire, food-temperature, microbial contamination, sanitation or overall kitchen-safety verdicts.
 - A useful next evaluation needs independently labeled kitchen images/video, separately measured head detection, zone assignment, obstruction precision/recall and false events per minute.
